@@ -7,6 +7,8 @@ import (
 	"io"
 	"math/rand"
 	"net"
+
+	"github.com/bitly/go-simplejson"
 )
 
 const (
@@ -141,5 +143,41 @@ func (bili *BiliBiliClient) ReceiveMessageLoop() {
 }
 
 func (bili *BiliBiliClient) parseDanMu(message string) {
+	dic, err := simplejson.NewJson([]byte(message))
+	if err != nil {
+		fmt.Println("Json decode error failed: ", err)
+		return
+	}
+
+	cmd, err := dic.Get("cmd").String()
+	if err != nil {
+		fmt.Println("Json decode error failed: ", err)
+		return
+	}
+
+	if cmd == "LIVE" {
+		fmt.Println("直播开始。。。")
+		return
+	}
+	if cmd == "PREPARING" {
+		fmt.Println("房主准备中。。。")
+		return
+	}
+	if cmd == "DANMU_MSG" {
+		commentText, err := dic.Get("info").GetIndex(1).String()
+		if err != nil {
+			fmt.Println("Json decode error failed: ", err)
+			return
+		}
+
+		commentUser, err := dic.Get("info").GetIndex(2).GetIndex(1).String()
+		if err != nil {
+			fmt.Println("Json decode error failed: ", err)
+			return
+		}
+
+		fmt.Println(commentUser, " say: ", commentText)
+		return
+	}
 
 }
