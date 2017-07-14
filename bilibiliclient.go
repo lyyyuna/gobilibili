@@ -90,6 +90,7 @@ func (bili *BiliBiliClient) SendSocketData(packetlength uint32, magic uint16, ve
 		err := binary.Write(headerBytes, binary.BigEndian, v)
 		if err != nil {
 			fmt.Println("binary write failed: ", err)
+			return
 		}
 	}
 	socketData := append(headerBytes.Bytes(), bodyBytes...)
@@ -101,20 +102,24 @@ func (bili *BiliBiliClient) ReceiveMessageLoop() {
 		buf := make([]byte, 4)
 		if _, err := io.ReadFull(bili.serverConn, buf); err != nil {
 			fmt.Println("binary read failed: ", err)
+			return
 		}
 		expr := binary.BigEndian.Uint32(buf)
 		buf = make([]byte, 4)
 		if _, err := io.ReadFull(bili.serverConn, buf); err != nil {
 			fmt.Println("binary read failed: ", err)
+			return
 		}
 		buf = make([]byte, 4)
 		if _, err := io.ReadFull(bili.serverConn, buf); err != nil {
 			fmt.Println("binary read failed: ", err)
+			return
 		}
 		num := binary.BigEndian.Uint32(buf)
 		buf = make([]byte, 4)
 		if _, err := io.ReadFull(bili.serverConn, buf); err != nil {
 			fmt.Println("binary read failed: ", err)
+			return
 		}
 
 		num2 := expr - 16
@@ -124,6 +129,7 @@ func (bili *BiliBiliClient) ReceiveMessageLoop() {
 				buf = make([]byte, 4)
 				if _, err := io.ReadFull(bili.serverConn, buf); err != nil {
 					fmt.Println("binary read failed: ", err)
+					return
 				}
 				num3 := binary.BigEndian.Uint32(buf)
 				fmt.Println("房间人数为：", num3)
@@ -132,6 +138,7 @@ func (bili *BiliBiliClient) ReceiveMessageLoop() {
 				buf = make([]byte, num2)
 				if _, err := io.ReadFull(bili.serverConn, buf); err != nil {
 					fmt.Println("binary read failed: ", err)
+					return
 				}
 				messages := string(buf)
 				bili.parseDanMu(messages)
@@ -140,6 +147,7 @@ func (bili *BiliBiliClient) ReceiveMessageLoop() {
 				buf = make([]byte, num2)
 				if _, err := io.ReadFull(bili.serverConn, buf); err != nil {
 					fmt.Println("binary read failed: ", err)
+					return
 				}
 				continue
 			} else {
@@ -147,6 +155,7 @@ func (bili *BiliBiliClient) ReceiveMessageLoop() {
 					buf = make([]byte, num2)
 					if _, err := io.ReadFull(bili.serverConn, buf); err != nil {
 						fmt.Println("binary read failed: ", err)
+						return
 					}
 					continue
 				} else {
