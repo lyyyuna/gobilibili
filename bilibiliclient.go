@@ -50,7 +50,11 @@ func (bili *BiliBiliClient) ConnectServer(roomId int) {
 	bili.serverConn = dstConn
 	fmt.Println("弹幕链接中。。。")
 	bili.SendJoinChannel(bili.roomId)
-
+	go bili.HeartbeatLoop()
+	go bili.ReceiveMessageLoop()
+	for {
+		time.Sleep(time.Second * 10)
+	}
 }
 
 // HeartbeatLoop define
