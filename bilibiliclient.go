@@ -8,6 +8,8 @@ import (
 	"math/rand"
 	"net"
 
+	"time"
+
 	"github.com/bitly/go-simplejson"
 )
 
@@ -27,11 +29,12 @@ type BiliBiliClient struct {
 	uid             int
 }
 
-func NewBiliBiliClient() {
+func NewBiliBiliClient() *BiliBiliClient {
 	bili := new(BiliBiliClient)
 	bili.ChatHost = "livecmt-1.bilibili.com"
 	bili.ChatPort = 788
 	bili.protocolversion = 1
+	return bili
 }
 
 // ConnectServer define
@@ -48,6 +51,14 @@ func (bili *BiliBiliClient) ConnectServer(roomId int) {
 	fmt.Println("弹幕链接中。。。")
 	bili.SendJoinChannel(bili.roomId)
 
+}
+
+// HeartbeatLoop define
+func (bili *BiliBiliClient) HeartbeatLoop() {
+	for {
+		bili.SendSocketData(0, 16, bili.protocolversion, 2, 1, "")
+		time.Sleep(time.Second * 30)
+	}
 }
 
 // SendJoinChannel define

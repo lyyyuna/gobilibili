@@ -1,13 +1,11 @@
 package main
 
 import (
-	"fmt"
+	"github.com/lyyyuna/gobilibili"
 )
 
 func main() {
-	str := "速度环"
-	bytes := []byte(str)
-	fmt.Println(bytes)
-	message := string(bytes)
-	fmt.Println(message)
+	bili := gobilibili.NewBiliBiliClient()
+	go bili.ConnectServer(115)
+	bili.HeartbeatLoop()
 }
