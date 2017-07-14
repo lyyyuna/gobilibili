@@ -1,8 +1,14 @@
 # gobilibili
 
-B 站直播弹幕 Go 版
+B 站直播弹幕 Go 版。
+
+## 安装
+
+    go get github.com/lyyyuna/gobilibili
 
 ## 简单说明
+
+参考 example/main.go，打印实时直播弹幕。
 
 程序逻辑来自我的 [B 站直播弹幕姬 Python 版](https://github.com/lyyyuna/bilibili_danmu)。逻辑基本和 Python 版本保持一致，可以对着理解。
 
