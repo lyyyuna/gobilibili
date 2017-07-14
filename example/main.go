@@ -6,5 +6,5 @@ import (
 
 func main() {
 	bili := gobilibili.NewBiliBiliClient()
-	bili.ConnectServer(115)
+	bili.ConnectServer(1016)
 }

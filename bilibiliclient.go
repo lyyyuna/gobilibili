@@ -49,7 +49,7 @@ func (bili *BiliBiliClient) ConnectServer(roomId int) {
 	}
 	bili.serverConn = dstConn
 	fmt.Println("弹幕链接中。。。")
-	bili.SendJoinChannel(bili.roomId)
+	bili.SendJoinChannel(roomId)
 	go bili.HeartbeatLoop()
 	go bili.ReceiveMessageLoop()
 	for {
@@ -68,7 +68,7 @@ func (bili *BiliBiliClient) HeartbeatLoop() {
 // SendJoinChannel define
 func (bili *BiliBiliClient) SendJoinChannel(channelId int) {
 	bili.uid = rand.Intn(max) + min
-	body := fmt.Sprintf("{'roomid':%d,'uid':%d}", channelId, bili.uid)
+	body := fmt.Sprintf("{\"roomid\":%d,\"uid\":%d}", channelId, bili.uid)
 	bili.SendSocketData(0, 16, bili.protocolversion, 7, 1, body)
 }
 
@@ -100,34 +100,31 @@ func (bili *BiliBiliClient) SendSocketData(packetlength uint32, magic uint16, ve
 func (bili *BiliBiliClient) ReceiveMessageLoop() {
 	for {
 		buf := make([]byte, 4)
-		if _, err := io.ReadFull(bili.serverConn, buf); err != nil {
+		if _, err := io.ReadAtLeast(bili.serverConn, buf, 4); err != nil {
 			fmt.Println("binary read failed: ", err)
 			continue
 		}
 		expr := binary.BigEndian.Uint32(buf)
-		buf = make([]byte, 4)
-		if _, err := io.ReadFull(bili.serverConn, buf); err != nil {
+		if _, err := io.ReadAtLeast(bili.serverConn, buf, 4); err != nil {
 			fmt.Println("binary read failed: ", err)
 			continue
 		}
-		buf = make([]byte, 4)
-		if _, err := io.ReadFull(bili.serverConn, buf); err != nil {
+		if _, err := io.ReadAtLeast(bili.serverConn, buf, 4); err != nil {
 			fmt.Println("binary read failed: ", err)
 			continue
 		}
 		num := binary.BigEndian.Uint32(buf)
-		buf = make([]byte, 4)
-		if _, err := io.ReadFull(bili.serverConn, buf); err != nil {
+		if _, err := io.ReadAtLeast(bili.serverConn, buf, 4); err != nil {
 			fmt.Println("binary read failed: ", err)
 			continue
 		}
 
-		num2 := expr - 16
+		num2 := int(expr - 16)
 		if num2 != 0 {
 			num = num - 1
 			if num == 0 || num == 1 || num == 2 {
 				buf = make([]byte, 4)
-				if _, err := io.ReadFull(bili.serverConn, buf); err != nil {
+				if _, err := io.ReadAtLeast(bili.serverConn, buf, 4); err != nil {
 					fmt.Println("binary read failed: ", err)
 					continue
 				}
@@ -136,7 +133,7 @@ func (bili *BiliBiliClient) ReceiveMessageLoop() {
 				continue
 			} else if num == 3 || num == 4 {
 				buf = make([]byte, num2)
-				if _, err := io.ReadFull(bili.serverConn, buf); err != nil {
+				if _, err := io.ReadAtLeast(bili.serverConn, buf, num2); err != nil {
 					fmt.Println("binary read failed: ", err)
 					continue
 				}
@@ -145,7 +142,7 @@ func (bili *BiliBiliClient) ReceiveMessageLoop() {
 				continue
 			} else if num == 5 || num == 6 || num == 7 {
 				buf = make([]byte, num2)
-				if _, err := io.ReadFull(bili.serverConn, buf); err != nil {
+				if _, err := io.ReadAtLeast(bili.serverConn, buf, num2); err != nil {
 					fmt.Println("binary read failed: ", err)
 					continue
 				}
@@ -153,7 +150,7 @@ func (bili *BiliBiliClient) ReceiveMessageLoop() {
 			} else {
 				if num != 16 {
 					buf = make([]byte, num2)
-					if _, err := io.ReadFull(bili.serverConn, buf); err != nil {
+					if _, err := io.ReadAtLeast(bili.serverConn, buf, num2); err != nil {
 						fmt.Println("binary read failed: ", err)
 						continue
 					}
