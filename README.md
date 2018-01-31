@@ -25,6 +25,7 @@ import "github.com/bigemon/gobilibili"
 func main() {
 	bili := gobilibili.NewBiliBiliClient()
 	bili.RegHandleFunc(gobilibili.CmdAll, gobilibili.DefaultHandler)
+	bili.ConnectServer(102)
 }
 ```
 #### 事件订阅
