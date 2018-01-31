@@ -1,5 +1,6 @@
 # gobilibili
 ![](https://ws1.sinaimg.cn/large/521c75dcly1fo040yjlaij20g90a6myb.jpg)
+
 B 站直播弹幕 Go 版。
 在[原项目](https://github.com/lyyyuna/gobilibili) 基础上作了以下修改:
 
