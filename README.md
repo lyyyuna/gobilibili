@@ -14,7 +14,7 @@ B 站直播弹幕 Go 版。
     go get github.com/bigemon/gobilibili
 ## 示例
 
-#### 实时打印弹幕
+### 实时打印弹幕
 
 ```
 package main
@@ -30,7 +30,8 @@ func main() {
 如果你希望订阅不同的事件，请尝试gobilibili.Cmd*开头的一系列常量。
 以下是一些示例,你也可以随时在example目录下查看.
 
-#####订阅弹幕事件，并输出弹幕信息
+
+*订阅弹幕事件，并输出弹幕信息*
 
 ```
 bili := gobilibili.NewBiliBiliClient()
@@ -41,7 +42,7 @@ bili.RegHandleFunc(gobilibili.CmdDanmuMsg, func(c *gobilibili.Context) bool {
 })
 ```
 
-#####进入房间
+*进入房间*
 
 ```
 bili.RegHandleFunc(gobilibili.CmdWelcome, func(c *gobilibili.Context) bool {
@@ -54,7 +55,8 @@ bili.RegHandleFunc(gobilibili.CmdWelcome, func(c *gobilibili.Context) bool {
 	return false
 })
 ```
-#####投喂礼物
+*投喂礼物*
+
 ```
 bili.RegHandleFunc(gobilibili.CmdSendGift, func(c *gobilibili.Context) bool {
 	gInfo := c.GetGiftInfo()
@@ -62,7 +64,8 @@ bili.RegHandleFunc(gobilibili.CmdSendGift, func(c *gobilibili.Context) bool {
 	return false
 })
 ```
-#####在线人数变动
+*在线人数变动*
+
 ```
 bili.RegHandleFunc(gobilibili.CmdOnlineChange, func(c *gobilibili.Context) bool {
 	online := c.GetOnlineNumber()
@@ -70,7 +73,8 @@ bili.RegHandleFunc(gobilibili.CmdOnlineChange, func(c *gobilibili.Context) bool 
 	return false
 })
 ```
-#####状态切换为直播开始
+*状态切换为直播开始*
+
 ```
 bili.RegHandleFunc(gobilibili.CmdLive, func(c *gobilibili.Context) bool {
 	online := c.GetOnlineNumber()
@@ -78,7 +82,8 @@ bili.RegHandleFunc(gobilibili.CmdLive, func(c *gobilibili.Context) bool {
 	return false
 })
 ```
-#####状态切换为准备中
+*状态切换为准备中*
+
 ```
 bili.RegHandleFunc(gobilibili.CmdPreparing, func(c *gobilibili.Context) bool {
 	online := c.GetOnlineNumber()
@@ -86,7 +91,7 @@ bili.RegHandleFunc(gobilibili.CmdPreparing, func(c *gobilibili.Context) bool {
 	return false
 })
 ```
-#####返回值
+*返回值*
 Handler和HandleFunc的返回值用于控制调用链是否继续向下执行。 
 如果你希望其它调用链能够继续响应这个事件，请返回false。
 
