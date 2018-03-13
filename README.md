@@ -12,7 +12,7 @@ B 站直播弹幕 Go 版。
 * 为大部分函数添加了错误处理
 
 ## 安装
-    go get github.com/bigemon/gobilibili
+    go get github.com/lyyyuna/gobilibili
 ## 示例
 
 ### 实时打印弹幕
@@ -20,7 +20,7 @@ B 站直播弹幕 Go 版。
 ```
 package main
 
-import "github.com/bigemon/gobilibili"
+import "github.com/lyyyuna/gobilibili"
 
 func main() {
 	bili := gobilibili.NewBiliBiliClient()
@@ -103,7 +103,7 @@ Handler和HandleFunc的返回值用于控制调用链是否继续向下执行。
 ```
 package main
 
-import "github.com/bigemon/gobilibili"
+import "github.com/lyyyuna/gobilibili"
 
 func main() {
 	bili := gobilibili.NewBiliBiliClient()
