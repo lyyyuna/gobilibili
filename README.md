@@ -12,7 +12,9 @@ B 站直播弹幕 Go 版。
 * 为大部分函数添加了错误处理
 
 ## 安装
-    go get github.com/lyyyuna/gobilibili
+```
+go get github.com/lyyyuna/gobilibili
+``` 
 ## 示例
 
 ### 实时打印弹幕
