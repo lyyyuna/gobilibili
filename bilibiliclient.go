@@ -11,6 +11,7 @@ import (
 	"math/rand"
 	"net"
 	"net/http"
+	"strings"
 
 	"time"
 
@@ -40,6 +41,8 @@ const (
 	CmdWelcome CmdType = "WELCOME"
 	//CmdSendGift 赠送礼物
 	CmdSendGift CmdType = "SEND_GIFT"
+	//CmdNoticeMsg 系统消息通知
+	CmdNoticeMsg CmdType = "NOTICE_MSG"
 	//CmdOnlineChange 在线人数变动,这不是一个标准cmd类型,仅为了统一handler接口而加入
 	CmdOnlineChange CmdType = "ONLINE_CHANGE"
 )
@@ -256,6 +259,11 @@ func (bili *BiliBiliClient) parseDanMu(message string) (err error) {
 	cmd, err := dic.Get("cmd").String()
 	if err != nil {
 		return
+	}
+	// 弹幕升级了，弹幕cmd获得的值不是DANMU_MSG, 而是DANMU_MSG: + 版本, 例如: DANMU_MSG:4:0:2:2:2:0
+	// 在这里兼容一下
+	if strings.HasPrefix(cmd, string(CmdDanmuMsg)) {
+		cmd = string(CmdDanmuMsg)
 	}
 	bili.callCmdHandlerChain(CmdType(cmd), &Context{RoomID: bili.roomID, Msg: dic}) //call cmd handler chain
 	bili.callCmdHandlerChain("", &Context{RoomID: bili.roomID, Msg: dic})           //call default handler chain
