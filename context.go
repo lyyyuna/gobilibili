@@ -174,3 +174,13 @@ func (p *Context) GetGiftInfo() (gInfo GiftInfo) {
 	}
 	return
 }
+
+type NoticeMsg struct {
+	MsgCommon string `json:msg_common`
+}
+
+//GetNoticeMsg 获取系统消息通知
+func (p *Context) GetNoticeMsg() (nMsg NoticeMsg) {
+	nMsg.MsgCommon = p.Msg.Get("msg_common").MustString()
+	return
+}

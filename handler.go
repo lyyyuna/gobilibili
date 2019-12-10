@@ -2,6 +2,7 @@ package gobilibili
 
 import (
 	"fmt"
+	"strings"
 )
 
 //DefaultHandler print cmd msg log
@@ -18,7 +19,8 @@ func DefaultHandler(c *Context) bool {
 		fmt.Println("房主准备中。。。")
 		return false
 	}
-	if cmd == "DANMU_MSG" {
+	// 弹幕升级了，弹幕cmd获得的值不是DANMU_MSG, 而是DANMU_MSG: + 版本, 例如: DANMU_MSG:4:0:2:2:2:0
+	if cmd == "DANMU_MSG" || strings.HasPrefix(cmd, "DANMU_MSG") {
 		commentText, err := c.Msg.Get("info").GetIndex(1).String()
 		if err != nil {
 			fmt.Println("Json decode error failed: ", err)
